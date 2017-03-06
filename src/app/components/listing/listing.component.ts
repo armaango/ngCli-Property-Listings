@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FirebaseService} from '../../services/firebase.service';
+import * as firebase from 'firebase';
 
 import {Router, ActivatedRoute, Params} from '@angular/router';
 
@@ -22,7 +23,14 @@ export class ListingComponent implements OnInit {
     this.firebaseService.getListingDetails(this.id).subscribe(listing=>{
       this.listing=listing;
       console.log(listing);
-      //@TODO Storage ref
+      
+      let storageRef = firebase.storage().ref();
+      let spaceRef  = storageRef.child(listing.path);
+      storageRef.child(listing.path).getDownloadURL().then((url)=>{
+        this.imageUrl = url;
+      }).catch((err)=>{
+        console.log(err);
+      })
     })
   }
 
