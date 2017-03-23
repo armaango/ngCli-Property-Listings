@@ -12,10 +12,11 @@ folder:any;
 
   constructor(private af: AngularFire) {
     this.folder = 'listingimages';
+    this.listings = this.af.database.list('/listings') as FirebaseListObservable<Listing[]>;
 
   }
   getListings(){
-    this.listings = this.af.database.list('/listings') as FirebaseListObservable<Listing[]>;
+    
     return this.listings;
   }
   getListingDetails(id){
@@ -34,6 +35,9 @@ folder:any;
         return this.listings.push(listing);
       })
     }
+  }
+  updateListing(id, listing){
+    return this.listings.update(id, listing);
   }
 }
 interface Listing{
